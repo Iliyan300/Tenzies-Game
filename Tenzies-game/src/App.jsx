@@ -8,21 +8,27 @@ function App() {
   
 const [dice, setDice] = useState(getRandomNumbers());
 
-function getRandomNumbers() {
-  const newDice = [];
-for(let i = 0; i < 10; i++) {
-
-  newDice.push({
+function generateNumbers() {
+  return {
     value: Math.ceil(Math.random() * 6), 
     isHeld: false, 
     id: nanoid()
-  })
+  }
+}
+
+function getRandomNumbers() {
+  const newDice = [];
+for(let i = 0; i < 10; i++) {
+newDice.push(generateNumbers())
 }
 return newDice;
 }
 
 function rollDice() {
-setDice(getRandomNumbers)
+setDice(oldDice => oldDice.map((die) => {
+  return die.isHeld ? die : generateNumbers()
+  
+}))
 
 }
 
@@ -31,6 +37,8 @@ function holdDice(id) {
   setDice(oldDice => oldDice.map((die) => die.id === id ? {...die, isHeld: !die.isHeld} : die))
   
 }
+
+
 
 
 const diceNumberElements = dice.map((die) => <Die key={die.id} value={die.value} isHeld={die.isHeld} holdDice={() => holdDice(die.id)}/>)
