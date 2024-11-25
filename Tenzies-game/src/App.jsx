@@ -8,6 +8,11 @@ function App() {
   
 const [dice, setDice] = useState(getRandomNumbers());
 const [tenzies, setTenzies] = useState(false);
+const [rolls, setRolls] = useState(0);
+const [seconds, setSeconds] = useState(0);
+const [isActive, setIsActive] = useState(false)
+
+
 
 useEffect(() => {
 
@@ -21,6 +26,19 @@ if(allHeld && allSameValues) {
 
 },[dice])
 
+useEffect(() => {
+  
+  let interval;
+  
+    if(isActive) {
+    interval = setInterval(() => {
+      setSeconds(prev => prev + 1)
+      },1000)
+    } 
+  
+  return () => clearInterval(interval);
+
+},[isActive])
 
 function generateNumbers() {
   return {
@@ -43,6 +61,8 @@ setDice(oldDice => oldDice.map((die) => {
   return die.isHeld ? die : generateNumbers()
   
 }))
+setRolls(prev => prev + 1);
+setIsActive(true)
 
 }
 
@@ -55,6 +75,7 @@ function holdDice(id) {
 function newGame() {
   setDice(getRandomNumbers());
   setTenzies(false);
+  setRolls(0);
 }
 
 const diceNumberElements = dice.map((die) => <Die key={die.id} value={die.value} isHeld={die.isHeld} holdDice={() => holdDice(die.id)}/>)
@@ -66,16 +87,18 @@ const diceNumberElements = dice.map((die) => <Die key={die.id} value={die.value}
       <h1 className="main-title">Tenzies</h1>
       <p className="main-paragraph">Roll until all dice are the same. 
         Click each die to freeze it at its current value between rolls.</p>
+        { rolls > 0 && <h3>0:0{seconds}</h3> }
         <div className='button-wrapper'>
       {diceNumberElements}
       </div>
       { tenzies 
       ? <button className="control-btn" onClick={newGame}>New game</button> 
       : <button className="control-btn" onClick={rollDice}>Roll</button> }
-      
+      <p>Rolls: {rolls} </p>
     </main>
   )
 }
 
 export default App
+
 
