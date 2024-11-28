@@ -9,36 +9,36 @@ function App() {
 const [dice, setDice] = useState(getRandomNumbers());
 const [tenzies, setTenzies] = useState(false);
 const [rolls, setRolls] = useState(0);
-const [seconds, setSeconds] = useState(0);
-const [isActive, setIsActive] = useState(false)
+const [userName, setUserName] = useState("")
+const [isPlayerName, setIsPlayerName] = useState(false);
 
 
+function handleUserName(event) {
+  setUserName(event.target.value)
+}
+
+function handleStartGame() {
+ 
+ if(userName.trim() === "") {
+
+  return;
+  }
+
+setIsPlayerName(true)
+localStorage.setItem(`player: ${nanoid()}`, userName);
+
+}
 
 useEffect(() => {
-
  const allHeld = dice.every((die) => die.isHeld);
 const firstValue = dice[0].value;
 const allSameValues = dice.every(die => die.value === firstValue);
 
 if(allHeld && allSameValues) {
   setTenzies(true);
-}
+}},[dice])
 
-},[dice])
 
-useEffect(() => {
-  
-  let interval;
-  
-    if(isActive) {
-    interval = setInterval(() => {
-      setSeconds(prev => prev + 1)
-      },1000)
-    } 
-  
-  return () => clearInterval(interval);
-
-},[isActive])
 
 function generateNumbers() {
   return {
@@ -47,6 +47,7 @@ function generateNumbers() {
     id: nanoid()
   }
 }
+
 
 function getRandomNumbers() {
 const newDice = [];
@@ -62,39 +63,59 @@ setDice(oldDice => oldDice.map((die) => {
   
 }))
 setRolls(prev => prev + 1);
-setIsActive(true)
+
 
 }
 
 function holdDice(id) {
-
   setDice(oldDice => oldDice.map((die) => die.id === id ? {...die, isHeld: !die.isHeld} : die))
-  
 }
 
 function newGame() {
   setDice(getRandomNumbers());
   setTenzies(false);
   setRolls(0);
+  
 }
 
-const diceNumberElements = dice.map((die) => <Die key={die.id} value={die.value} isHeld={die.isHeld} holdDice={() => holdDice(die.id)}/>)
+
+
+
+const diceNumberElements = dice.map((die) => 
+<Die 
+key={die.id} 
+value={die.value} 
+isHeld={die.isHeld} 
+holdDice={() => holdDice(die.id)}
+/>)
 
 
   return (
     <main className="main-wrapper">
+  
       {tenzies && <Confetti />}
       <h1 className="main-title">Tenzies</h1>
-      <p className="main-paragraph">Roll until all dice are the same. 
+      <p className="main-paragraph"> <strong>Rules:</strong> Roll until all dice are the same. 
         Click each die to freeze it at its current value between rolls.</p>
-        { rolls > 0 && <h3>0:0{seconds}</h3> }
-        <div className='button-wrapper'>
+      
+      { isPlayerName ?
+      
+      <div className="interface">
+      <div className='button-wrapper'>
       {diceNumberElements}
       </div>
       { tenzies 
       ? <button className="control-btn" onClick={newGame}>New game</button> 
       : <button className="control-btn" onClick={rollDice}>Roll</button> }
       <p>Rolls: {rolls} </p>
+      </div> 
+
+      : <form>
+       <input className='username-input' type="text" name="userName"placeholder='Player Name' value={userName} onChange={handleUserName}></input> 
+       <button className="start-game-btn" onClick={handleStartGame}>Start Game</button>
+        {!userName ? <p>Please provide name</p> : <p>Are you ready {userName}?</p>}
+       </form>}
+        
     </main>
   )
 }

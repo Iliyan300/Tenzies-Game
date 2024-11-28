@@ -34,6 +34,7 @@ align-items: center;
 
   width: 250px;
   font-size:1.2rem;
+  margin: 2rem;
 }
 
 .button-wrapper {
@@ -65,3 +66,52 @@ background: #5035FF;
 color:#ffff;
 border:none;
 }
+
+.username-input {
+
+  font-size:1.5rem;
+  border-radius: 5px;
+  text-align: center;
+  border:3px solid gray
+  
+}
+
+.username-input:focus {
+
+  border-color:#bc68f5;
+  box-shadow: 1px 1px 5px gray;
+}
+
+.start-game-btn {
+
+  padding:1rem;
+  margin-top:3rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #bc68f5;
+  color:#ffff;
+  font-size:1.2rem;
+  font-weight: bold;
+  border:none;
+  box-shadow: 1px 1px 5px gray;
+}
+
+
+.start-game-btn:hover {
+
+  background-color: #5035FF;
+
+}
+
+
+form {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+
+

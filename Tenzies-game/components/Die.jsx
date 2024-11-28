@@ -8,7 +8,9 @@ const styles = {
 
     return(
     <>
+    <div>
       <h2 onClick={props.holdDice} style={styles}>{props.value}</h2>
+      </div>
       </>
     )
 }
