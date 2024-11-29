@@ -15,14 +15,38 @@ body {
 .main-wrapper {
 display: flex;
 flex-direction: column;
-justify-content: center;
+justify-content: top;
 align-items: center;
   background: #F5F5F5;
   min-width: 80vw;
   min-height: 80vh;
   border-radius:10px;
   text-align: center;
+  padding:1rem;
+  
 }
+
+.interface {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.stop-reset-btn {
+
+  margin-top:1rem;
+  background-color: #fd3e3e;
+  color: #ffff;
+  border:none;
+  padding:10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px grey;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 
 .main-title {
 
@@ -39,30 +63,24 @@ align-items: center;
 
 .button-wrapper {
   
-  margin:1rem;
+  margin-bottom:1rem;
   display:grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   column-gap:1.5rem;
+  padding:10px;
   
 }
 
-h2 {
-  cursor: pointer;
-  font-size:1.8rem;
-  border-radius: 5px;
-  box-shadow: 2px 2px 5px grey;
-  font-weight: 600;
- padding:10px;
-  
-}
 
 .control-btn {
+
 cursor: pointer;
 font-size:1.5rem;
+font-weight: bold;
 padding:8px 30px 8px 30px;
 border-radius: 5px;
 box-shadow: 2px 2px 5px grey;
-background: #5035FF;
+background: #0d4fca;
 color:#ffff;
 border:none;
 }
@@ -72,14 +90,15 @@ border:none;
   font-size:1.5rem;
   border-radius: 5px;
   text-align: center;
-  border:3px solid gray
-  
+  padding:3px;
+  border:2px solid #2b2b2b;
 }
 
 .username-input:focus {
 
-  border-color:#bc68f5;
-  box-shadow: 1px 1px 5px gray;
+box-shadow:0px 0px 2px 2px #0d4fca;
+border:2px solid white;
+outline:none;
 }
 
 .start-game-btn {
@@ -88,7 +107,7 @@ border:none;
   margin-top:3rem;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #bc68f5;
+  background-color: #0d4fca;
   color:#ffff;
   font-size:1.2rem;
   font-weight: bold;
@@ -99,7 +118,8 @@ border:none;
 
 .start-game-btn:hover {
 
-  background-color: #5035FF;
+  background-color: #fd3e3e;
+
 
 }
 
@@ -110,6 +130,41 @@ form {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+
+.logo {
+
+max-width: 200px;
+
+}
+
+.die-face {
+
+  width: 55px;
+  height:60px;
+  background-color: #f9f9f9;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin:5px;
+  padding:5px;
+  cursor: pointer;
+  box-shadow: 0px 0px 1px 1px black;
+}
+
+.dot {
+
+  width: 11px;
+  height: 11px;
+  background-color: #333;
+  border-radius: 50%;
+  margin-left:4px;
+  margin-right: 4px;
+  
 }
 
 

@@ -78,7 +78,11 @@ function newGame() {
   
 }
 
+const toggleResetBtn = () => {
 
+ return (rolls > 0 && tenzies === false) && <button className='stop-reset-btn' onClick={newGame}>Stop & Reset</button>
+  
+}
 
 
 const diceNumberElements = dice.map((die) => 
@@ -86,6 +90,7 @@ const diceNumberElements = dice.map((die) =>
 key={die.id} 
 value={die.value} 
 isHeld={die.isHeld} 
+id={die.id}
 holdDice={() => holdDice(die.id)}
 />)
 
@@ -94,6 +99,7 @@ holdDice={() => holdDice(die.id)}
     <main className="main-wrapper">
   
       {tenzies && <Confetti />}
+      <img src="/Tenzies-logo.png" className='logo'></img>
       <h1 className="main-title">Tenzies</h1>
       <p className="main-paragraph"> <strong>Rules:</strong> Roll until all dice are the same. 
         Click each die to freeze it at its current value between rolls.</p>
@@ -107,16 +113,18 @@ holdDice={() => holdDice(die.id)}
       { tenzies 
       ? <button className="control-btn" onClick={newGame}>New game</button> 
       : <button className="control-btn" onClick={rollDice}>Roll</button> }
-      <p>Rolls: {rolls} </p>
+     
+      { toggleResetBtn() }
+      <p><strong>Rolls: </strong> {rolls} </p>
       </div> 
 
       : <form>
-       <input className='username-input' type="text" name="userName"placeholder='Player Name' value={userName} onChange={handleUserName}></input> 
+       <input className='username-input' type="text" name="userName" placeholder='Name:' value={userName} onChange={handleUserName}></input> 
        <button className="start-game-btn" onClick={handleStartGame}>Start Game</button>
         {!userName ? <p>Please provide name</p> : <p>Are you ready {userName}?</p>}
        </form>}
         
-    </main>
+    </main> 
   )
 }
 
