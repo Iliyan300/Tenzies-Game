@@ -5,7 +5,7 @@
 
 
 body {
-  margin: 2rem;
+  
   display: flex;
   justify-content: center;
   padding:2rem;
@@ -18,8 +18,8 @@ flex-direction: column;
 justify-content: top;
 align-items: center;
   background: #F5F5F5;
-  min-width: 80vw;
-  min-height: 80vh;
+  min-width: 90vw;
+  min-height: 90vh;
   border-radius:10px;
   text-align: center;
   padding:1rem;
@@ -167,6 +167,17 @@ max-width: 200px;
   
 }
 
+.trackers-wrapper {
 
+  border:2px solid #0d4fca;
+  padding:10px;
+  margin:20px;
+  border-radius: 5px;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  width:350px;
+  box-shadow: 0px 0px 3px black;
+}
 
 

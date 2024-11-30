@@ -5,7 +5,7 @@ function Dice(props) {
 const dotElements = [];
 
 for(let i = 0; i < props.value; i++) {
-dotElements.push(<div key={props.id} className="dot"></div>)
+dotElements.push(<div key={i} className="dot"></div>)
 }
 
 const styles = {
