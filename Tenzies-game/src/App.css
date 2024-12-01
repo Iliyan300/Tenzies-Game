@@ -26,7 +26,7 @@ align-items: center;
   
 }
 
-.interface {
+.dice-section {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,7 +61,7 @@ align-items: center;
   margin: 2rem;
 }
 
-.button-wrapper {
+.dice-wrapper {
   
   margin-bottom:1rem;
   display:grid;
@@ -167,7 +167,7 @@ max-width: 200px;
   
 }
 
-.trackers-wrapper {
+.trackers-section {
 
   border:2px solid #0d4fca;
   padding:10px;
@@ -180,4 +180,19 @@ max-width: 200px;
   box-shadow: 0px 0px 3px black;
 }
 
+
+#message {
+
+  color:red;
+}
+
+#timer {
+
+  font-weight: bold;
+}
+
+#rolls {
+
+  font-weight: bold;
+}
 

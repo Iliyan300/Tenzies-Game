@@ -17,7 +17,7 @@ const [userName, setUserName] = useState("");
 const [isPlayerName, setIsPlayerName] = useState(false);
 const [isRunning, setIsRunning] = useState(false);
 const [miliseconds, setmiliSeconds] = useState(0);
-
+const [showMessage, setShowMessage] = useState(false);
 
 
 function handleUserName(event) {
@@ -27,23 +27,25 @@ function handleUserName(event) {
 function handleStartGame() {
  
  if(userName.trim() === "") {
-
+  
+  setShowMessage(true);
   return;
   }
 
-setIsPlayerName(true)
-localStorage.setItem(`player: ${nanoid()}`, userName);
+
+setIsPlayerName(true);
+localStorage.setItem(`player: ${Date.now()}`, userName);
 
 }
 
 useEffect(() => {
- const allHeld = dice.every((die) => die.isHeld);
+const allHeld = dice.every((die) => die.isHeld);
 const firstValue = dice[0].value;
 const allSameValues = dice.every(die => die.value === firstValue);
 
 if(allHeld && allSameValues) {
   setTenzies(true);
-  setIsRunning(false)
+  setIsRunning(false);
 } 
 },[dice])
 
@@ -72,26 +74,27 @@ setDice(oldDice => oldDice.map((die) => {
 }))
 
 setRolls(prev => prev + 1);
-setIsRunning(true);
+
 
 }
 
 function holdDice(id) {
   setDice(oldDice => oldDice.map((die) => die.id === id ? {...die, isHeld: !die.isHeld} : die))
+  setIsRunning(true);
 }
 
 function newGame() {
   setDice(getRandomNumbers());
   setTenzies(false);
   setRolls(0);
-  setIsRunning(false)
-  setmiliSeconds(0)
+  setIsRunning(false);
+  setmiliSeconds(0);
 
 }
 
 const toggleResetBtn = () => {
  
-return (rolls > 0 && tenzies === false) && <button className='stop-reset-btn' onClick={newGame}>Stop & Reset</button>
+return (isRunning === true && tenzies === false) && <button className='stop-reset-btn' onClick={newGame}>Stop & Reset</button>
   
 }
 
@@ -110,34 +113,46 @@ holdDice={() => holdDice(die.id)}
     <main className="main-wrapper">
   
       {tenzies && <Confetti />}
-      <img src="/Tenzies-logo.png" className='logo'></img>
+      
+      <section className="header-section">
+      <img src="/Tenzies-logo.png" className='logo' />
       <h1 className="main-title">Tenzies</h1>
       <p className="main-paragraph"> <strong>Rules:</strong> Roll until all dice are the same. 
         Click each die to freeze it at its current value between rolls.</p>
-      <div className="trackers-wrapper">
-        
-      <Timer miliseconds={miliseconds} setmiliSeconds={setmiliSeconds} isRunning={isRunning} />
-      <RollsTracker  rolls={rolls}/>
-      </div>
+      </section>
+      
+      <section className="trackers-section">
+      <Timer miliseconds={miliseconds} setmiliSeconds={setmiliSeconds} isRunning={isRunning} isTenzies={tenzies} />
+      <RollsTracker isTenzies={tenzies}  rolls={rolls}/>
+      </section>
 
       { isPlayerName ?
-      
-      <div className="interface">
-      <div className='button-wrapper'>
+      <section className="dice-section">
+      <div className='dice-wrapper'>
       {diceNumberElements}
       </div>
-      { tenzies 
-      ? <button className="control-btn" onClick={newGame}>New game</button> 
-      : <button className="control-btn" onClick={rollDice}>Roll</button> }
-     
-      { toggleResetBtn() }
-  
-      </div> 
+      {tenzies 
+      ? <button className="control-btn" onClick={newGame}> New game </button>  
+      : <button className="control-btn" onClick={rollDice}> Roll </button>}
+     {toggleResetBtn()}
+      </section> 
 
       : <form>
-       <input className='username-input' type="text" name="userName" placeholder='Name:' value={userName} onChange={handleUserName}></input> 
-       <button className="start-game-btn" onClick={handleStartGame}>Start Game</button>
-        {!userName ? <p>Please provide name</p> : <p>Are you ready {userName}?</p>}
+       <input 
+       className='username-input' 
+       type="text" 
+       name="userName" 
+       placeholder='Name:' 
+       value={userName} 
+       onChange={handleUserName} 
+       />
+        <button 
+        type="button" 
+        className="start-game-btn" 
+        onClick={handleStartGame}>
+        Start Game 
+        </button>
+         {showMessage && <p id='message'>Please provide a name</p> }
        </form>}
         
     </main> 

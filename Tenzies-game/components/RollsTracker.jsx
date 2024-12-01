@@ -1,12 +1,12 @@
 
 
-function RollsTracker(props) {
+function RollsTracker({rolls, isTenzies}) {
 
 
 
 return(
 
-    <p><strong>Rolls: </strong> {props.rolls} </p>
+    <p> Rolls: <span id="rolls" style={{color: isTenzies ? "#0d4fca" : ""}}> {rolls} </span> </p>
 )
 }
 

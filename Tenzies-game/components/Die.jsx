@@ -1,20 +1,20 @@
 import React from "react"
 
-function Dice(props) {
+function Dice({value, isHeld, holdDice}) {
 
 const dotElements = [];
 
-for(let i = 0; i < props.value; i++) {
+for(let i = 0; i < value; i++) {
 dotElements.push(<div key={i} className="dot"></div>)
 }
 
 const styles = {
-  backgroundColor: props.isHeld ? "#59E391" : "white"
+  backgroundColor: isHeld ? "#59E391" : "white"
 }
 
     return(
     <>
-    <div className="die-face" style={styles}  onClick={props.holdDice}>
+    <div className="die-face" style={styles}  onClick={holdDice}>
     {dotElements}
       </div>
       </>
