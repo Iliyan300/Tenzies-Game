@@ -16,8 +16,9 @@ const [rolls, setRolls] = useState(0);
 const [userName, setUserName] = useState("");
 const [isPlayerName, setIsPlayerName] = useState(false);
 const [isRunning, setIsRunning] = useState(false);
-const [miliseconds, setmiliSeconds] = useState(0);
+const [currentTime, setCurrentTime] = useState(0);
 const [showMessage, setShowMessage] = useState(false);
+
 
 
 function handleUserName(event) {
@@ -34,7 +35,7 @@ function handleStartGame() {
 
 
 setIsPlayerName(true);
-localStorage.setItem(`player: ${Date.now()}`, userName);
+localStorage.setItem("playerUserName", userName);
 
 }
 
@@ -43,11 +44,43 @@ const allHeld = dice.every((die) => die.isHeld);
 const firstValue = dice[0].value;
 const allSameValues = dice.every(die => die.value === firstValue);
 
+
 if(allHeld && allSameValues) {
   setTenzies(true);
   setIsRunning(false);
+  saveBestAchievement(currentTime, rolls);
 } 
+
+
 },[dice])
+
+
+function saveBestAchievement(currTime, currRolls) {
+
+const bestAchievement = JSON.parse(localStorage.getItem('bestAchievement'));
+
+if(!bestAchievement || 
+  currTime < bestAchievement.time || (currTime === bestAchievement.time && currRolls < bestAchievement.rolls)) 
+  {
+
+  const newBest = {time: currTime, rolls: currRolls}
+
+  localStorage.setItem(`bestAchievement`, JSON.stringify(newBest));
+  alert("new best time saved!")
+
+}
+}
+
+
+function formatTime(miliseconds) {
+
+let minutes = Math.floor(miliseconds / 60000);
+let seconds = Math.floor((miliseconds % 60000) / 1000);
+let milisecs = Math.floor((miliseconds % 1000) / 10);
+
+return ` ${minutes}:${String(seconds).padStart(2,0)}:${String(milisecs).padStart(2,0)}`
+
+}
 
 
 function generateNumbers() {
@@ -88,7 +121,7 @@ function newGame() {
   setTenzies(false);
   setRolls(0);
   setIsRunning(false);
-  setmiliSeconds(0);
+  setCurrentTime(0);
 
 }
 
@@ -122,7 +155,7 @@ holdDice={() => holdDice(die.id)}
       </section>
       
       <section className="trackers-section">
-      <Timer miliseconds={miliseconds} setmiliSeconds={setmiliSeconds} isRunning={isRunning} isTenzies={tenzies} />
+      <Timer formatTime={formatTime} miliseconds={currentTime} setmiliSeconds={setCurrentTime} isRunning={isRunning} isTenzies={tenzies} />
       <RollsTracker isTenzies={tenzies}  rolls={rolls}/>
       </section>
 

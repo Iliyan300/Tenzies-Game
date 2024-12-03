@@ -1,6 +1,6 @@
 import { useEffect} from 'react'
 
-function Timer({miliseconds, setmiliSeconds, isRunning, isTenzies}) {
+function Timer({miliseconds, setmiliSeconds, isRunning, isTenzies, formatTime}) {
   
 useEffect(() => {
 
@@ -20,19 +20,12 @@ useEffect(() => {
 },[isRunning])
 
 
-let minutes = Math.floor(miliseconds / 60000);
-let seconds = Math.floor((miliseconds % 60000) / 1000);
-let milisecs = Math.floor((miliseconds % 1000) / 10);
-
 
     return(
 
         <p>
-        Time: 
-        <span id='timer' style={{color: isTenzies ? "#0d4fca" : ""}}> 
-         {minutes < 10 ? ` 0${minutes}` : minutes} 
-        :{seconds < 10 ? `0${seconds}` : seconds}
-        :{milisecs < 10 ? `0${milisecs}` : milisecs} 
+        Time: <span id='timer' style={{color: isTenzies ? "#0d4fca" : ""}}>  
+        {formatTime(miliseconds)}
         </span>
         </p>
         
