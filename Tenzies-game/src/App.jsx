@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Die from "../components/Die"
 import Timer from "../components/Timer"
 import RollsTracker from '../components/RollsTracker'
+import Scoreboard from '../components/Scoreboard'
 import './App.css'
 import { nanoid } from "nanoid"
 import Confetti from "react-confetti"
@@ -10,15 +11,27 @@ import Confetti from "react-confetti"
 
 function App() {
   
-const [dice, setDice] = useState(getRandomNumbers());
+  const [dice, setDice] = useState(getRandomNumbers());
+  const [rolls, setRolls] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
 const [tenzies, setTenzies] = useState(false);
-const [rolls, setRolls] = useState(0);
-const [userName, setUserName] = useState("");
 const [isPlayerName, setIsPlayerName] = useState(false);
 const [isRunning, setIsRunning] = useState(false);
-const [currentTime, setCurrentTime] = useState(0);
 const [showMessage, setShowMessage] = useState(false);
+const [isScoreBoardShowed, setIsScoreBoardShowed] = useState(true);
 
+const [userScore, setUser] = useState([]);
+const [userName, setUserName] = useState("");
+
+
+
+useEffect(() => {
+
+  let storedUsers = JSON.parse(localStorage.getItem("scoreboard")) || [];
+  setUser(storedUsers);
+
+},[])
 
 
 function handleUserName(event) {
@@ -28,48 +41,38 @@ function handleUserName(event) {
 function handleStartGame() {
  
  if(userName.trim() === "") {
-  
   setShowMessage(true);
   return;
   }
 
+  setIsPlayerName(true);
+  
+  const newUser = {userName, time: 0, rolls: 0};
+  const updatedUsers = [...userScore, newUser];
+  setUser(updatedUsers);
+  localStorage.setItem("scoreboard", JSON.stringify(updatedUsers));
+  setUserName("");
 
-setIsPlayerName(true);
-localStorage.setItem("playerUserName", userName);
+  
 
 }
 
 useEffect(() => {
+
 const allHeld = dice.every((die) => die.isHeld);
 const firstValue = dice[0].value;
 const allSameValues = dice.every(die => die.value === firstValue);
 
-
 if(allHeld && allSameValues) {
   setTenzies(true);
   setIsRunning(false);
-  saveBestAchievement(currentTime, rolls);
+  
 } 
-
 
 },[dice])
 
 
-function saveBestAchievement(currTime, currRolls) {
 
-const bestAchievement = JSON.parse(localStorage.getItem('bestAchievement'));
-
-if(!bestAchievement || 
-  currTime < bestAchievement.time || (currTime === bestAchievement.time && currRolls < bestAchievement.rolls)) 
-  {
-
-  const newBest = {time: currTime, rolls: currRolls}
-
-  localStorage.setItem(`bestAchievement`, JSON.stringify(newBest));
-  alert("new best time saved!")
-
-}
-}
 
 
 function formatTime(miliseconds) {
@@ -131,7 +134,28 @@ return (isRunning === true && tenzies === false) && <button className='stop-rese
   
 }
 
+function showScore() {
 
+  setIsScoreBoardShowed(prev => !prev);
+ 
+};
+
+/*  NEED TO FIX THIS!
+
+function getUserScore(currentName, currentTime, currentRolls) {
+
+  const updatedUsers = userScore.map((user) => 
+    user.userName === currentName
+    ? {...user, time: formatTime(currentTime), rolls: currentRolls }
+    : user
+  );
+
+  setUser(updatedUsers);
+  localStorage.setItem("scoreboard", JSON.stringify(updatedUsers));
+
+}
+
+*/ 
 
 const diceNumberElements = dice.map((die) => 
 <Die 
@@ -143,7 +167,12 @@ holdDice={() => holdDice(die.id)}
 
 
   return (
-    <main className="main-wrapper">
+  
+<>
+
+    { isScoreBoardShowed ? 
+    
+      <main className="main-wrapper" id="main-wrapper-style">
   
       {tenzies && <Confetti />}
       
@@ -168,8 +197,9 @@ holdDice={() => holdDice(die.id)}
       ? <button className="control-btn" onClick={newGame}> New game </button>  
       : <button className="control-btn" onClick={rollDice}> Roll </button>}
      {toggleResetBtn()}
-      </section> 
-
+     {tenzies && <Scoreboard showScore={showScore} />} 
+      </section>  
+      
       : <form>
        <input 
        className='username-input' 
@@ -187,8 +217,29 @@ holdDice={() => holdDice(die.id)}
         </button>
          {showMessage && <p id='message'>Please provide a name</p> }
        </form>}
-        
-    </main> 
+
+    </main>
+      
+      :  <section className='scoreboard'>
+
+<h1> Scoreboard </h1>
+        <ul className='score-list'> 
+          
+          <li>Name: Iliikata</li>
+          <li>Time: 15:20:23</li>
+          <li>Rolls: 25</li>
+          
+        </ul>
+        <Scoreboard 
+        showScore={showScore} 
+        userName={userName} 
+        rolls={rolls} 
+        currentTime={currentTime}/>
+      </section>
+      
+      
+      }
+    </>
   )
 }
 
