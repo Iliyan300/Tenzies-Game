@@ -21,15 +21,14 @@ const [isRunning, setIsRunning] = useState(false);
 const [showMessage, setShowMessage] = useState(false);
 const [isScoreBoardShowed, setIsScoreBoardShowed] = useState(true);
 
-const [userScore, setUser] = useState([]);
+const [userScore, setUserScore] = useState([]);
 const [userName, setUserName] = useState("");
-
 
 
 useEffect(() => {
 
   let storedUsers = JSON.parse(localStorage.getItem("scoreboard")) || [];
-  setUser(storedUsers);
+  setUserScore(storedUsers);
 
 },[])
 
@@ -46,13 +45,11 @@ function handleStartGame() {
   }
 
   setIsPlayerName(true);
-  
-  const newUser = {userName, time: 0, rolls: 0};
+ 
+  const newUser = {username: userName, time: 0, rolls: 0};
   const updatedUsers = [...userScore, newUser];
-  setUser(updatedUsers);
+  setUserScore(updatedUsers);
   localStorage.setItem("scoreboard", JSON.stringify(updatedUsers));
-  setUserName("");
-
   
 
 }
@@ -66,12 +63,10 @@ const allSameValues = dice.every(die => die.value === firstValue);
 if(allHeld && allSameValues) {
   setTenzies(true);
   setIsRunning(false);
-  
+ 
 } 
 
 },[dice])
-
-
 
 
 
@@ -134,28 +129,30 @@ return (isRunning === true && tenzies === false) && <button className='stop-rese
   
 }
 
-function showScore() {
 
-  setIsScoreBoardShowed(prev => !prev);
- 
-};
+function getUserScore(currentName, currTime, currentRolls) {
 
-/*  NEED TO FIX THIS!
-
-function getUserScore(currentName, currentTime, currentRolls) {
-
+  
   const updatedUsers = userScore.map((user) => 
-    user.userName === currentName
-    ? {...user, time: formatTime(currentTime), rolls: currentRolls }
+    
+    (user.username === currentName)
+    ? {...user, time: currTime, rolls: currentRolls }
     : user
   );
+  
 
-  setUser(updatedUsers);
+  setUserScore(updatedUsers);
   localStorage.setItem("scoreboard", JSON.stringify(updatedUsers));
+  setIsScoreBoardShowed(prev => !prev);
 
 }
 
-*/ 
+
+function toggleScore() {
+
+  setIsScoreBoardShowed(prev => !prev);
+}
+
 
 const diceNumberElements = dice.map((die) => 
 <Die 
@@ -169,8 +166,7 @@ holdDice={() => holdDice(die.id)}
   return (
   
 <>
-
-    { isScoreBoardShowed ? 
+   { isScoreBoardShowed ? 
     
       <main className="main-wrapper" id="main-wrapper-style">
   
@@ -184,8 +180,16 @@ holdDice={() => holdDice(die.id)}
       </section>
       
       <section className="trackers-section">
-      <Timer formatTime={formatTime} miliseconds={currentTime} setmiliSeconds={setCurrentTime} isRunning={isRunning} isTenzies={tenzies} />
-      <RollsTracker isTenzies={tenzies}  rolls={rolls}/>
+      <Timer 
+      formatTime={formatTime} 
+      miliseconds={currentTime} 
+      setmiliSeconds={setCurrentTime} 
+      isRunning={isRunning} 
+      isTenzies={tenzies} />
+      
+      <RollsTracker 
+      isTenzies={tenzies} 
+      rolls={rolls}/>
       </section>
 
       { isPlayerName ?
@@ -197,7 +201,7 @@ holdDice={() => holdDice(die.id)}
       ? <button className="control-btn" onClick={newGame}> New game </button>  
       : <button className="control-btn" onClick={rollDice}> Roll </button>}
      {toggleResetBtn()}
-     {tenzies && <Scoreboard showScore={showScore} />} 
+     {tenzies && <button onClick={() => getUserScore(userName, currentTime, rolls)} className="scoreboard-btn"> Scoreboard </button> } 
       </section>  
       
       : <form>
@@ -215,29 +219,16 @@ holdDice={() => holdDice(die.id)}
         onClick={handleStartGame}>
         Start Game 
         </button>
+        <button onClick={toggleScore} className="scoreboard-btn"> Scoreboard </button>
          {showMessage && <p id='message'>Please provide a name</p> }
        </form>}
-
     </main>
       
-      :  <section className='scoreboard'>
-
-<h1> Scoreboard </h1>
-        <ul className='score-list'> 
-          
-          <li>Name: Iliikata</li>
-          <li>Time: 15:20:23</li>
-          <li>Rolls: 25</li>
-          
-        </ul>
-        <Scoreboard 
-        showScore={showScore} 
-        userName={userName} 
-        rolls={rolls} 
-        currentTime={currentTime}/>
-      </section>
-      
-      
+      :  <Scoreboard 
+      users={userScore} 
+      toggleScore={toggleScore}
+      formatTime={formatTime}
+       />
       }
     </>
   )
