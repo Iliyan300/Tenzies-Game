@@ -11,11 +11,10 @@ const usersList = (
   ? <ul className="score-list">
 {fileterdUsers.map((user, index) => (
 <li key={index}>
-  {user.username} Time: {formatTime(user.time)} Rolls: {user.rolls}
+ <strong>{user.username}</strong> Time: <strong>{formatTime(user.time)}</strong> Rolls: <strong>{user.rolls}</strong>
   </li>
 ))}
 </ul> 
-
   : <p>No games played yet.</p>
 )
 
