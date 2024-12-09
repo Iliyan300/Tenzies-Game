@@ -18,11 +18,14 @@ function App() {
 const [tenzies, setTenzies] = useState(false);
 const [isPlayerName, setIsPlayerName] = useState(false);
 const [isRunning, setIsRunning] = useState(false);
-const [showMessage, setShowMessage] = useState(false);
+const [isEmptyUsername, setisEmptyUsername] = useState(false);
+const [isUsernameEqual, setIsUsernameEqual] = useState(false);
 const [isScoreBoardShowed, setIsScoreBoardShowed] = useState(true);
 
 const [userScore, setUserScore] = useState([]);
 const [userName, setUserName] = useState("");
+
+const allUserNames = userScore.map((user) => user.username)
 
 
 useEffect(() => {
@@ -34,18 +37,21 @@ useEffect(() => {
 
 
 function handleUserName(event) {
-  setUserName(event.target.value)
+ setUserName(event.target.value)
+  
 }
 
 function handleStartGame() {
  
- if(userName.trim() === "") {
-  setShowMessage(true);
-  return;
+if(userName.trim() === "") {
+  setisEmptyUsername(true);
+ return;
+  } else if (allUserNames.includes(userName.trim())) {
+    setIsUsernameEqual(true);
+    return;
   }
 
   setIsPlayerName(true);
- 
   const newUser = {username: userName, time: 0, rolls: 0};
   const updatedUsers = [...userScore, newUser];
   setUserScore(updatedUsers);
@@ -220,7 +226,8 @@ holdDice={() => holdDice(die.id)}
         Start Game 
         </button>
         <button onClick={toggleScore} className="scoreboard-btn"> Scoreboard </button>
-         {showMessage && <p id='message'>Please provide a name</p> }
+         {isEmptyUsername && <p id='message'>Please provide a name</p> }
+         {isUsernameEqual && <p id='message'>This username already exists.</p> }
        </form>}
     </main>
       
