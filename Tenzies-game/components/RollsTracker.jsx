@@ -1,8 +1,5 @@
 
-
 function RollsTracker({rolls, isTenzies}) {
-
-
 
 return(
 

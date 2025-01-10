@@ -181,7 +181,6 @@ holdDice={() => holdDice(die.id)}
       {tenzies && <Confetti />}
       
       <section className="header-section">
-      <img src="/Tenzies-logo.png" className='logo' />
       <h1 className="main-title">Tenzies</h1>
       <p className="main-paragraph"> <strong>Rules:</strong> Roll until all dice are the same. 
         Click each die to freeze it at its current value between rolls.</p>
