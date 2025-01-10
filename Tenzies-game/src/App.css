@@ -8,8 +8,8 @@ body {
   
   display: flex;
   justify-content: center;
-  padding:2rem;
   background: #0B2434;
+  padding:2rem;
 }
 
 .main-wrapper {
@@ -260,4 +260,105 @@ button {
   color:#0d4fca;
   font-size:1.3rem;
   font-weight: bold;
+}
+
+
+
+/* RESPONSIVE DESIGN FOR MOBILE */
+
+
+@media (max-width: 768px) {
+  
+.main-wrapper {
+  max-width: 95vw;
+  min-height: 80vh;
+
+}
+  
+.dice-wrapper {
+
+  margin-bottom:1rem;
+  display:grid;
+  grid-template-columns: repeat(5, 55px);
+  max-width: 100vw;
+  gap:1rem;
+  
+  
+}
+
+.scoreboard {
+
+  padding-left: 8px;
+  padding-right: 8px;
+  min-width: 100vw;
+}
+
+.score-list {
+  font-size: 1rem;
+ max-width: 80vw;
+ max-height: 70vh;
+  border:2px solid grey;
+  
+}
+
+.score-list li {
+  margin: 10px;
+  padding: 0.5rem;
+  word-spacing: 15px;
+}
+
+#ranking-nums {
+  font-size: 1.1rem;
+}
+ 
+}
+
+@media (max-width: 480px) {
+ 
+
+  .main-wrapper {
+    max-width: 100vw;
+    min-height: 90vh;
+    padding-left: 8px;
+    padding-right: 8px;
+
+  }
+    
+  .dice-wrapper {
+  
+    margin-bottom:1rem;
+    display:grid;
+    grid-template-columns: repeat(5, 55px);
+    max-width: 100vw;
+    gap:1rem;
+    
+  }
+  
+  .scoreboard {
+    padding-bottom:10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    min-width: 100vw;
+    
+  }
+  
+  .score-list {
+    font-size: 1rem;
+   max-width: 85vw;
+   max-height: 80vh;
+    border:2px solid grey;
+    
+    
+  }
+  
+  .score-list li {
+    margin: 10px;
+    padding: 0.5rem;
+    word-spacing: 15px;
+  }
+  
+  #ranking-nums {
+    font-size: 1.1rem;
+  }
+
 }
