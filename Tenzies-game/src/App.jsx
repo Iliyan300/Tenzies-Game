@@ -25,7 +25,7 @@ const [isScoreBoardShowed, setIsScoreBoardShowed] = useState(true);
 const [userScore, setUserScore] = useState([]);
 const [userName, setUserName] = useState("");
 
-const allUserNames = userScore.map((user) => user.username)
+
 
 
 useEffect(() => {
@@ -43,6 +43,8 @@ function handleUserName(event) {
 
 function handleStartGame() {
  
+  const allUserNames = userScore.map((user) => user.username)
+
 if(userName.trim() === "") {
   setisEmptyUsername(true);
  return;
